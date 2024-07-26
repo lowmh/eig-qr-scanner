@@ -92,7 +92,7 @@ function QRScanner() {
 
   const handleFormSubmit = () => {
     const order_id = generateUniqueId();
-    fetch("http://localhost:4201/items", {
+    fetch("http://localhost:4200/items", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
