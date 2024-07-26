@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const port = process.env.PORT || 4201;
+const port = process.env.PORT || 4201; // Ensure the port is correct
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -13,11 +13,11 @@ let connection;
 
 function handleDisconnect() {
   connection = mysql.createConnection({
-    host: "178.128.221.254", // Update this if your host is different
+    host: "178.128.221.254",
     user: "antzpcgtre",
     password: "AwKJ54HupF",
     database: "antzpcgtre",
-    port: 3306, // Make sure this is correct, typically 3306 for MySQL
+    port: 3306,
   });
 
   connection.connect(function (err) {
@@ -31,7 +31,7 @@ function handleDisconnect() {
 
   connection.on("error", function (err) {
     console.error("Database error", err);
-    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+    if (err.code === "PROTOCOL_CONNECTION_LOST" || err.code === "ECONNRESET") {
       handleDisconnect();
     } else {
       throw err;
