@@ -91,7 +91,7 @@ function QRScanner() {
   };
 
   const handleFormSubmit = () => {
-    fetch("http://localhost:3306/items", {
+    fetch("http://localhost:4201/items", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
