@@ -18,9 +18,9 @@ let connection;
 function handleDisconnect() {
   connection = mysql.createConnection({
     host: "178.128.221.254",
-    user: "antzpcgtre",
-    password: "AwKJ54HupF",
-    database: "antzpcgtre",
+    user: "gejzmedqjv",
+    password: "8SP5EmDwpu",
+    database: "gejzmedqjv",
     port: 3306,
   });
 
