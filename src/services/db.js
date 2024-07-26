@@ -7,7 +7,11 @@ const port = process.env.PORT || 4201; // Ensure the port is correct
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Adjust according to your security requirements
+  })
+);
 
 let connection;
 

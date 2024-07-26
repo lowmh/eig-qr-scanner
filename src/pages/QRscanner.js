@@ -91,7 +91,6 @@ function QRScanner() {
   };
 
   const handleFormSubmit = () => {
-    const order_id = generateUniqueId();
     fetch("http://localhost:4201/items", {
       method: "POST",
       headers: {
@@ -99,11 +98,11 @@ function QRScanner() {
       },
       body: JSON.stringify(
         allResults.map((result) => ({
-          id: result.id, // Function to generate a unique ID
+          id: result.id,
           doId: result.doId,
           sku: result.sku,
           serialNum: result.serialNum,
-          orderId: order_id,
+          orderId: generateUniqueId(),
         }))
       ),
     })
