@@ -92,7 +92,7 @@ function QRScanner() {
 
   const handleFormSubmit = () => {
     const order_id = generateUniqueId();
-    fetch("https://phpstack-649761-4757186.cloudwaysapps.com/items", {
+    fetch("http://localhost:4201/items", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
