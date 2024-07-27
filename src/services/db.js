@@ -13,36 +13,15 @@ app.use(
   })
 );
 
-let connection;
+const dbConfig = {
+  host: "178.128.221.254",
+  user: "gejzmedqjv",
+  password: "8SP5EmDwpu",
+  database: "gejzmedqjv",
+  connectionLimit: 10, // Use connection pool with a limit of 10 connections
+};
 
-function handleDisconnect() {
-  connection = mysql.createConnection({
-    host: "178.128.221.254",
-    user: "gejzmedqjv",
-    password: "8SP5EmDwpu",
-    database: "gejzmedqjv",
-  });
-
-  connection.connect(function (err) {
-    if (err) {
-      console.error("Error connecting to the database: " + err.stack);
-      setTimeout(handleDisconnect, 2000); // Retry after 2 seconds
-    } else {
-      console.log("Connected to the database as id " + connection.threadId);
-    }
-  });
-
-  connection.on("error", function (err) {
-    console.error("Database error", err);
-    if (err.code === "PROTOCOL_CONNECTION_LOST" || err.code === "ECONNRESET") {
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  });
-}
-
-handleDisconnect();
+const pool = mysql.createPool(dbConfig);
 
 app.post("/items", function (req, res) {
   const items = req.body;
@@ -57,7 +36,7 @@ app.post("/items", function (req, res) {
   const query2 = "INSERT IGNORE INTO `order` (order_id) VALUES ?";
   const values2 = uniqueOrderIds.map((orderId) => [orderId]);
 
-  connection.query(query2, [values2], function (err, result) {
+  pool.query(query2, [values2], function (err, result) {
     if (err) {
       console.error("Error inserting into `order` table: " + err.stack);
       res
@@ -76,7 +55,7 @@ app.post("/items", function (req, res) {
       item.orderId,
     ]);
 
-    connection.query(query, [values], function (err, result) {
+    pool.query(query, [values], function (err, result) {
       if (err) {
         console.error("Error inserting into `order_item` table: " + err.stack);
         res

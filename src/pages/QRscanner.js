@@ -115,7 +115,6 @@ function QRScanner() {
         return response.text();
       })
       .then((data) => {
-        console.log(data);
         if (data === "Success") {
           alert("Data submitted successfully!");
           handleFormClear(); // Clear the form after successful submission
