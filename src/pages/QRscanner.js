@@ -91,7 +91,7 @@ function QRScanner() {
   };
 
   const handleFormSubmit = () => {
-    fetch("http://localhost:4201/items", {
+    fetch("https://phpstack-649761-4758292.cloudwaysapps.com/items", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

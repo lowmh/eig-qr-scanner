@@ -21,7 +21,6 @@ function handleDisconnect() {
     user: "gejzmedqjv",
     password: "8SP5EmDwpu",
     database: "gejzmedqjv",
-    port: 3306,
   });
 
   connection.connect(function (err) {
