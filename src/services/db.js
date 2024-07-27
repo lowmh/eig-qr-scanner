@@ -25,7 +25,7 @@ const pool = mysql.createPool(dbConfig);
 
 app.post("/items", function (req, res) {
   const items = req.body;
-
+  console.log(req, res);
   if (!Array.isArray(items)) {
     res.status(400).send("Invalid data format, expected an array of items");
     return;
