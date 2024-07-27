@@ -3,13 +3,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const port = process.env.PORT || 4202; // Changed the port to 4202
+const port = process.env.PORT || 4202;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "*", // Adjust according to your security requirements
+    origin: "*",
   })
 );
 
@@ -18,14 +18,14 @@ const dbConfig = {
   user: "gejzmedqjv",
   password: "8SP5EmDwpu",
   database: "gejzmedqjv",
-  connectionLimit: 10, // Use connection pool with a limit of 10 connections
+  connectionLimit: 10,
 };
 
 const pool = mysql.createPool(dbConfig);
 
 app.post("/items", function (req, res) {
   const items = req.body;
-  console.log(req, res);
+
   if (!Array.isArray(items)) {
     res.status(400).send("Invalid data format, expected an array of items");
     return;
