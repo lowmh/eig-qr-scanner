@@ -14,7 +14,7 @@ app.use(
 );
 
 const dbConfig = {
-  host: "178.128.221.254:4202",
+  host: "178.128.221.254",
   user: "gejzmedqjv",
   password: "8SP5EmDwpu",
   database: "gejzmedqjv",
@@ -27,27 +27,38 @@ app.post("/items", function (req, res) {
   const items = req.body;
 
   if (!Array.isArray(items)) {
-    res.status(400).send("Invalid data format, expected an array of items");
-    return;
+    console.error("Invalid data format, expected an array of items");
+    return res
+      .status(400)
+      .send("Invalid data format, expected an array of items");
+  }
+
+  // Check for missing required fields in items
+  for (const item of items) {
+    if (!item.doId || !item.sku || !item.serialNum) {
+      console.error("Missing required fields in item:", item);
+      return res.status(400).send("Missing required fields in item");
+    }
   }
 
   const uniqueOrderIds = [...new Set(items.map((item) => item.orderId))];
 
-  const query2 = "INSERT IGNORE INTO `order` (order_id) VALUES ?";
-  const values2 = uniqueOrderIds.map((orderId) => [orderId]);
+  const insertOrderQuery = "INSERT IGNORE INTO `order` (order_id) VALUES ?";
+  const orderValues = uniqueOrderIds.map((orderId) => [orderId]);
 
-  pool.query(query2, [values2], function (err, result) {
+  console.log("Inserting into `order` table:", orderValues);
+
+  pool.query(insertOrderQuery, [orderValues], function (err, result) {
     if (err) {
-      console.error("Error inserting into `order` table: " + err.stack);
-      res
+      console.error("Error inserting into `order` table:", err);
+      return res
         .status(500)
         .send("Error inserting into `order` table: " + err.message);
-      return;
     }
 
-    const query =
+    const insertOrderItemQuery =
       "INSERT INTO order_item (id, do_num, sku, serial_num, order_id) VALUES ?";
-    const values = items.map((item) => [
+    const orderItemValues = items.map((item) => [
       item.id,
       item.doId,
       item.sku,
@@ -55,13 +66,14 @@ app.post("/items", function (req, res) {
       item.orderId,
     ]);
 
-    pool.query(query, [values], function (err, result) {
+    console.log("Inserting into `order_item` table:", orderItemValues);
+
+    pool.query(insertOrderItemQuery, [orderItemValues], function (err, result) {
       if (err) {
-        console.error("Error inserting into `order_item` table: " + err.stack);
-        res
+        console.error("Error inserting into `order_item` table:", err);
+        return res
           .status(500)
           .send("Error inserting into `order_item` table: " + err.message);
-        return;
       }
       res.send("Success");
     });
