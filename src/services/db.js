@@ -14,7 +14,7 @@ app.use(
 );
 
 const dbConfig = {
-  host: "178.128.221.254",
+  host: "178.128.221.254:4202",
   user: "gejzmedqjv",
   password: "8SP5EmDwpu",
   database: "gejzmedqjv",
