@@ -25,11 +25,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"react-scripts start\"",
+    "start": "concurrently \"npm run server\" \"react-scripts start --config ./webpack.config.js\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node src/services/db.js"
+    "server": "node src/services/db-staging.js"
   },
   "eslintConfig": {
     "extends": [

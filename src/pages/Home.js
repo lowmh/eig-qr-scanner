@@ -9,7 +9,8 @@ const MainPage = () => {
         backgroundColor: "background.paper",
         display: "flex",
         gap: 2,
-        margin: "0!important",
+        marginTop: 5,
+        marginLeft: 5,
       }}
     >
       <CardContent>

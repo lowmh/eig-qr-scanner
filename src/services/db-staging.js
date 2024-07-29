@@ -8,14 +8,14 @@ const port = 3001;
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors()); // Enable CORS for all origins
 
 // Set up connection to the database
 const connection = mysql.createConnection({
-  host: "",
-  user: "",
+  host: "127.0.0.1",
+  user: "root",
   password: "",
-  database: "",
+  database: "qr scanner", // Ensure correct database name
 });
 
 // Connect to database

@@ -12,6 +12,12 @@ function QRScanner() {
   const [sku, setSku] = useState("");
   const [activeInput, setActiveInput] = useState(null);
   const [allResults, setAllResults] = useState([]);
+  // ** error message
+  const [errors, setErrors] = useState({
+    doNumber: "",
+    sku: "",
+    serialNumber: "",
+  });
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("itemData");
@@ -57,6 +63,27 @@ function QRScanner() {
   };
 
   const handleSubmit = () => {
+    let valid = true;
+    const newErrors = { doNumber: "", sku: "", serialNumber: "" };
+
+    if (!scanResult1) {
+      newErrors.doNumber = "DO Number is required.";
+      valid = false;
+    }
+    if (!sku) {
+      newErrors.sku = "SKU is required.";
+      valid = false;
+    }
+    if (!scanResult2) {
+      newErrors.serialNumber = "Serial Number is required.";
+      valid = false;
+    }
+
+    if (!valid) {
+      setErrors(newErrors);
+      return;
+    }
+
     setId(id + 1);
     const result = {
       id: id,
@@ -74,6 +101,7 @@ function QRScanner() {
     setScanResult1("");
     setScanResult2("");
     setSku("");
+    setErrors({ doNumber: "", sku: "", serialNumber: "" }); // Clear errors
   };
 
   const handleReset = () => {
@@ -91,7 +119,8 @@ function QRScanner() {
   };
 
   const handleFormSubmit = () => {
-    fetch("https://phpstack-649761-4758292.cloudwaysapps.com/items", {
+    const orderId = generateUniqueId();
+    fetch("http://localhost:3001/items", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +131,7 @@ function QRScanner() {
           doId: result.doId,
           sku: result.sku,
           serialNum: result.serialNum,
-          orderId: generateUniqueId(),
+          orderId: orderId,
         }))
       ),
     })
@@ -153,6 +182,9 @@ function QRScanner() {
                 readOnly
                 className="input-field"
               />
+              {errors.doNumber && (
+                <Typography color="error">{errors.doNumber}</Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={1.5}>
               <Typography>SKU:</Typography>
@@ -165,6 +197,9 @@ function QRScanner() {
                 onChange={handleChange}
                 className="input-field"
               />
+              {errors.sku && (
+                <Typography color="error">{errors.sku}</Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={1.5}>
               <Typography>Serial Number:</Typography>
@@ -177,8 +212,12 @@ function QRScanner() {
                 readOnly
                 className="input-field"
               />
+              {errors.serialNumber && (
+                <Typography color="error">{errors.serialNumber}</Typography>
+              )}
             </Grid>
           </Grid>
+
           <Grid
             item
             xs={12}
